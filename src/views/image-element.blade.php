@@ -7,8 +7,13 @@
 	<div class="col-sm-10 col-lg-6">
 
 		@if($element->getValue())
-		<div class="well">
-			{{ $element->getValue() }}
+		<div class="media">
+			<a class="pull-left" href="#">
+				{{ HTML::image('image/100/100/' . $element->getValue(), $element->getValue(), array('class' => 'media-object')) }}
+			</a>
+			<div class="media-body">
+				{{ $element->getValue() }}
+			</div>
 		</div>
 		@endif
 

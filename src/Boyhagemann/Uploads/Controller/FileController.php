@@ -14,7 +14,7 @@ class FileController extends CrudController
      */
     public function buildForm(FormBuilder $fb)
     {
-        $fb->file('path')->label('File');
+        $fb->image('path')->label('File');
         $fb->hidden('name')->label('Name');
         $fb->hidden('extension')->label('Extension');
         $fb->hidden('size')->label('Size');
@@ -33,7 +33,6 @@ class FileController extends CrudController
      */
     public function buildOverview(OverviewBuilder $ob)
     {
-        $ob->fields(array('name', 'extension', 'size'));
     }
 
 }

@@ -29,7 +29,9 @@ class UploadsServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->app->make('formbuilder')->register('file', 'Boyhagemann\Uploads\Form\FileElement');
+		$this->app->make('formbuilder')
+			->register('file', 'Boyhagemann\Uploads\Form\FileElement')
+			->register('image', 'Boyhagemann\Uploads\Form\ImageElement');
 
 
 		Route::get('uploads/{path}', 'Boyhagemann\Uploads\Controller\DownloadController@file')->where('path', '.*');
