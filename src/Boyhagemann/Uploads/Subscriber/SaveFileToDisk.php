@@ -3,8 +3,9 @@
 namespace Boyhagemann\Uploads\Subscriber;
 
 use Illuminate\Events\Dispatcher as Events;
-use Boyhagemann\Uploads\Model\File;
+use Illuminate\Database\Eloquent\Model;
 use Boyhagemann\Crud\CrudController;
+use Boyhagemann\Uploads\Model\File;
 use Boyhagemann\Uploads\Form\FileElement;
 use Input;
 
@@ -30,10 +31,10 @@ class SaveFileToDisk
 	/**
 	 * Seed the form with defaults that are stored in the session
 	 *
-	 * @param FormBuilder $fb
+	 * @param Model $model
 	 * @param CrudController $crudController
 	 */
-	public function onCrudSaved(File $file, CrudController $crudController)
+	public function onCrudSaved(Model $model, CrudController $crudController)
 	{
 		$fb = $crudController->getFormBuilder();
 
@@ -41,6 +42,13 @@ class SaveFileToDisk
 
 			if(!$element instanceof FileElement) {
 				continue;
+			}
+
+			if($model instanceof File) {
+				$file = $model;
+			}
+			else {
+				$file = new File;
 			}
 
 			if($uploaded = Input::file($name)) {
@@ -54,7 +62,15 @@ class SaveFileToDisk
 				$file->size 		= $uploaded->getClientSize();
 				$file->path 		= $element->getPath() . '/' . $uploaded->getClientOriginalName();
 				$file->save();
+
+
+				if(!$model instanceof File) {
+					$model->$name = $element->getPath() . '/' . $uploaded->getClientOriginalName();
+					$model->save();
+				}
+
 			}
+
 
 		}
 
